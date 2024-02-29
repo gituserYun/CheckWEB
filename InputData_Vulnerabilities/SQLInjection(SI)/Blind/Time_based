@@ -1,0 +1,4 @@
+payload
+--------------------------------
+-> 대기 시간을 관찰하고 Time-based Blind SQL Injection이 동작하는지 확인 가능
+' OR sleep(0.2)#
